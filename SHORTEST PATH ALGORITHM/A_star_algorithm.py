@@ -1,11 +1,14 @@
+# Importing
 import pygame
 import math
 from queue import PriorityQueue
 
+# Board size
 WIDTH = 600
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("A* Path Finding Algorithm")
 
+# Colors
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 255, 0)
@@ -28,6 +31,7 @@ class Spot:
 		self.width = width
 		self.total_rows = total_rows
 
+	# Mouse positions
 	def get_pos(self):
 		return self.row, self.col
 
@@ -70,6 +74,8 @@ class Spot:
 	def draw(self, win):
 		pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
+		
+	# To make sure the objection is clear
 	def update_neighbors(self, grid):
 		self.neighbors = []
 		if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier(): # DOWN
@@ -94,13 +100,14 @@ def h(p1, p2):
 	return abs(x1 - x2) + abs(y1 - y2)
 
 
+# Making the two shortest paths connect to each other
 def reconstruct_path(came_from, current, draw):
 	while current in came_from:
 		current = came_from[current]
 		current.make_path()
 		draw()
 
-
+# The main mathematics
 def algorithm(draw, grid, start, end):
 	count = 0
 	open_set = PriorityQueue()
@@ -146,7 +153,7 @@ def algorithm(draw, grid, start, end):
 
 	return False
 
-
+# This is the interesting part
 def make_grid(rows, width):
 	grid = []
 	gap = width // rows
@@ -158,7 +165,7 @@ def make_grid(rows, width):
 
 	return grid
 
-
+# Well this too is intersting
 def draw_grid(win, rows, width):
 	gap = width // rows
 	for i in range(rows):
@@ -187,7 +194,7 @@ def get_clicked_pos(pos, rows, width):
 
 	return row, col
 
-
+# Oh this is lovely try and edit this sall value
 def main(win, width):
 	ROWS = 60
 	grid = make_grid(ROWS, width)
